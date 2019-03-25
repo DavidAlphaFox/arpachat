@@ -7,6 +7,6 @@
   ws.onopen = () => console.log('OPENED')
   }
 
-  let send = message => ws.send(message)
+  let send = (id, message) => ws.send(JSON.stringify({id: id, message: message}))
 </script>
 
