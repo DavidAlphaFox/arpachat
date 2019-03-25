@@ -3,8 +3,8 @@
   let ws = undefined
   let connect = () => {
   ws = new WebSocket('ws://localhost:5000/chat')
-  let ws.onmessage = event => console.log(event.data)
-  let = ws.onopen = () => console.log('OPENED')
+  ws.onmessage = event => console.log(event.data)
+  ws.onopen = () => console.log('OPENED')
   }
 
   let send = message => ws.send(message)
