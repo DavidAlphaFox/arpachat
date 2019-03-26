@@ -2,8 +2,8 @@
   :version "0.1.0"
   :author ""
   :license ""
-  :depends-on ("clack"
-               "websocket-driver-server")
+  :depends-on ("cl-json"
+               "hunchensocket")
   :components ((:module "src"
                 :components
                 ((:file "main"))))

@@ -3,27 +3,34 @@
   (:export :start))
 (in-package :arpachat)
 
-(defparameter *handler*
-  (intern (string-upcase
-           (or (asdf::getenv "CLACK_HANDLER")
-               "hunchentoot"))
-          :keyword))
+(defparameter *server* (make-instance 'hunchensocket:websocket-acceptor :port 3000))
 
-(defvar *app*
-  (lambda (env)
-    (cond
-      ((string= "/chat" (getf env :request-uri))
-       (let ((ws (websocket-driver:make-server env)))
+(defclass chat-room (hunchensocket:websocket-resource)
+  ((name :initarg :name :initform (error "Name this room!") :reader name))
+  (:default-initargs :client-class 'user))
 
-         (websocket-driver:on :open ws
-                              (lambda ()
-                                (print "OPENED")))
-         (websocket-driver:on :message ws
-                              (lambda (message)
-                                (websocket-driver:send ws message)))
-         (lambda (responder)
-           (declare (ignore responder))
-           (websocket-driver:start-connection ws)))))))
+(defclass user (hunchensocket:websocket-client)
+  ((name :initarg :user-agent :reader name :initform (error "Name this user!"))))
+
+(defvar *chat-rooms* (list (make-instance 'chat-room :name "/chat")))
+
+(defun find-room (request)
+  (find (hunchentoot:script-name request) *chat-rooms* :test #'string= :key #'name))
+
+(pushnew 'find-room hunchensocket:*websocket-dispatch-table*)
+
+(defun broadcast (room message &rest args)
+  (loop for peer in (hunchensocket:clients room)
+        do (hunchensocket:send-text-message peer (apply #'format nil message args))))
+
+(defmethod hunchensocket:client-connected ((room chat-room) user)
+  (broadcast room "~a has joined ~a" (name user) (name room)))
+
+(defmethod hunchensocket:client-disconnected ((room chat-room) user)
+  (broadcast room "~a has left ~a" (name user) (name room)))
+
+(defmethod hunchensocket:text-message-received ((room chat-room) user message)
+  (broadcast room "~a says ~a" (name user) message))  
 
 (defun start ()
-  (clack:clackup *app* :server *handler* :use-thread nil))
+  (hunchentoot:start *server*))
