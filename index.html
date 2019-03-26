@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Arpachat (Lisp)</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -21,24 +21,7 @@
 
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
-    <script>
-
-      $(function() {
-      let url = `ws://localhost:3000/chat`
-      let output
-
-      let websocket = new WebSocket(url)
-
-
-      $('form').submit(function(event) {
-      websocket.send($('#m').val())
-      })
-
-        websocket.onmessage = function(event) {
-        $('#messages').append($('<li>').text(event.data))
-        }
-      
-      })
+    <script src="script.js">
     </script>
   </body>
 </html>
