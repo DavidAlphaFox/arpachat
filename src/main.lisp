@@ -21,9 +21,6 @@
          (websocket-driver:on :message ws
                               (lambda (message)
                                 (websocket-driver:send ws message)))
-         (websocket-driver:on :close ws
-                              (lambda ()
-                                (print "CLOSED")))
          (lambda (responder)
            (declare (ignore responder))
            (websocket-driver:start-connection ws)))))))
