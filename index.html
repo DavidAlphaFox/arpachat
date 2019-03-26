@@ -19,6 +19,26 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
 
-    <script></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+    <script>
+
+      $(function() {
+      let url = `ws://localhost:3000/chat`
+      let output
+
+      let websocket = new WebSocket(url)
+
+
+      $('form').submit(function(event) {
+      websocket.send($('#m').val())
+      })
+
+        websocket.onmessage = function(event) {
+        $('#messages').append($('<li>').text(event.data))
+        }
+      
+      })
+    </script>
   </body>
 </html>
