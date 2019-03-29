@@ -10,4 +10,4 @@ install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
 
 script:
-  - ros -s prove -e '(or (prove:run :arpachat) (uiop:quit -1))'
+  - ros -s prove -e '(or (prove:run :arpachat/tests) (uiop:quit -1))'
