@@ -1,0 +1,13 @@
+language: common-lisp
+sudo: required
+
+env:
+  matrix:
+    - LISP=sbcl-bin
+    - LISP=ccl-bin
+
+install:
+  - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
+
+script:
+  - ros -s prove -e '(or (prove:run :arpachat) (uiop:quit -1))'
