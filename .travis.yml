@@ -10,4 +10,4 @@ install:
   - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
 
 script:
-  - ros -e '(or (progn (ql:quickload :arpachat) (asdf:test-system :arpachat)) (uiop:quit -1))'
+  - ros -e '(or (progn (ql:quickload :arpachat/tests) (asdf:test-system :arpachat/tests)) (uiop:quit -1))'
