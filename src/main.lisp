@@ -1,8 +1,8 @@
 (defpackage arpachat
   (:use :cl)
   (:export :start-ws
-           :start-static
-           :start))
+           :start
+           :stop))
 (in-package :arpachat)
 
 (defun ws-server (port)
@@ -40,12 +40,18 @@
 (defmethod hunchensocket:text-message-received ((room chat-room) user message)
   (broadcast room "~a says ~a" (name user) message))  
 
+
+(defparameter *ws-state* nil)
 (defun start-ws (port)
-  (hunchentoot:start (ws-server port) ))
+  (setf *ws-state* (ws-server port))
+  (hunchentoot:start *ws-state*))
 
 ;;(defun start-static (port)
 ;;  (hunchentoot:start (static-server port)))
 
 (defun start (port)
   (start-ws port))
-  ;;(start-static sp))
+
+(defun stop ()
+  (hunchentoot:stop *ws-state*))
+;;(start-static sp))
