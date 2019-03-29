@@ -4,7 +4,7 @@
 (in-package :arpachat)
 
 (defun server (port)
-    (make-instance 'hunchensocket:websocket-acceptor :port port))
+  (make-instance 'hunchensocket:websocket-acceptor :port port))
 
 (defclass chat-room (hunchensocket:websocket-resource)
   ((name :initarg :name :initform (error "Name this room!") :reader name))
@@ -22,7 +22,7 @@
 
 (defun broadcast (room message &rest args)
   (loop for peer in (hunchensocket:clients room)
-        do (hunchensocket:send-text-message peer (apply #'format nil message args))))
+     do (hunchensocket:send-text-message peer (apply #'format nil message args))))
 
 (defmethod hunchensocket:client-connected ((room chat-room) user)
   (broadcast room "~a has joined ~a" (name user) (name room)))
