@@ -1,10 +1,17 @@
 (defpackage arpachat
   (:use :cl)
-  (:export :start))
+  (:export :start-ws
+           :start-static
+           :start))
 (in-package :arpachat)
 
-(defun server (port)
+(defun ws-server (port)
   (make-instance 'hunchensocket:websocket-acceptor :port port))
+
+;; FIXME this server return 404 on the document-root
+;;(defun static-server (port)
+;;  (make-instance 'hunchentoot:acceptor :port port
+;;                 :document-root #P"/home/momozor/quicklisp/local-projects/arpachat"))
 
 (defclass chat-room (hunchensocket:websocket-resource)
   ((name :initarg :name :initform (error "Name this room!") :reader name))
@@ -33,5 +40,12 @@
 (defmethod hunchensocket:text-message-received ((room chat-room) user message)
   (broadcast room "~a says ~a" (name user) message))  
 
+(defun start-ws (port)
+  (hunchentoot:start (ws-server port) ))
+
+;;(defun start-static (port)
+;;  (hunchentoot:start (static-server port)))
+
 (defun start (port)
-  (hunchentoot:start (server port) ))
+  (start-ws port))
+  ;;(start-static sp))
