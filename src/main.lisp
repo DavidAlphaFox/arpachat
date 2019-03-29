@@ -1,18 +1,14 @@
 (defpackage arpachat
   (:use :cl)
   (:export :start-ws
+           :start-static
+           :stop-ws
+           :stop-static
            :start
            :stop))
 (in-package :arpachat)
 
-(defun ws-server (port)
-  (make-instance 'hunchensocket:websocket-acceptor :port port))
-
-;; FIXME this server return 404 on the document-root
-;;(defun static-server (port)
-;;  (make-instance 'hunchentoot:acceptor :port port
-;;                 :document-root #P"/home/momozor/quicklisp/local-projects/arpachat"))
-
+;;; chat room
 (defclass chat-room (hunchensocket:websocket-resource)
   ((name :initarg :name :initform (error "Name this room!") :reader name))
   (:default-initargs :client-class 'user))
@@ -38,20 +34,41 @@
   (broadcast room "~a has left ~a" (name user) (name room)))
 
 (defmethod hunchensocket:text-message-received ((room chat-room) user message)
-  (broadcast room "~a says ~a" (name user) message))  
+  (broadcast room "~a says ~a" (name user) message))
+
+;;; servers
+
+(defun ws-server (port)
+  (make-instance 'hunchensocket:websocket-acceptor :port port))
+
+;; FIXME make the root start dir portable (start in other people arpachat dir, not just
+;; momozor's)
+(defun static-server (port)
+  (make-instance 'hunchentoot:acceptor :port port
+                 :document-root #p"/home/momozor/quicklisp/local-projects/arpachat/index.html"))
 
 
-(defparameter *ws-state* nil)
+(defvar *ws-state* nil)
 (defun start-ws (port)
   (setf *ws-state* (ws-server port))
   (hunchentoot:start *ws-state*))
 
-;;(defun start-static (port)
-;;  (hunchentoot:start (static-server port)))
+(defvar *static-state* nil)
+(defun start-static (port)
+  (setf *static-state* (static-server port))
+  (hunchentoot:start *static-state*))
 
-(defun start (port)
-  (start-ws port))
+(defun stop-ws ()
+  (hunchentoot:stop *ws-state*))
+
+(defun stop-static ()
+  (hunchentoot:stop *static-state*))
+
+(defun start (&key (websocket-port 3000) (static-port 2000))
+  (start-ws websocket-port)
+  (start-static static-port))
 
 (defun stop ()
-  (hunchentoot:stop *ws-state*))
-;;(start-static sp))
+  (hunchentoot:stop *ws-state*)
+  (hunchentoot:stop *static-state*))
+
