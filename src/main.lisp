@@ -45,7 +45,7 @@
 ;; momozor's)
 (defun static-server (port)
   (make-instance 'hunchentoot:acceptor :port port
-                 :document-root #p"/home/momozor/quicklisp/local-projects/arpachat/index.html"))
+                 :document-root #p"/home/momozor/quicklisp/local-projects/arpachat/static/index.html"))
 
 
 (defvar *ws-state* nil)
