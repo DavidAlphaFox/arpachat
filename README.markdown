@@ -14,7 +14,7 @@ servers.
 * Launch a web browser and navigate to http://localhost:2000 to use the chat application.
 * Enjoy! :)
 
-If you find this software is helpful in any way, please click the***star*** button.
+If you find this software is helpful in any way, please click the ***star*** button.
 
 ## Authors
 * Momozor
