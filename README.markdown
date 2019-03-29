@@ -14,6 +14,11 @@ servers.
 * Launch a web browser and navigate to http://localhost:2000 to use the chat application.
 * Enjoy! :)
 
+## Use different ports
+* For server code customization, please see the comments in `src/main.lisp`
+* For client code customization, please assign the `PORT` and `HOST` variable
+with websocket port and host in `static/script.js`
+
 If you find this software is helpful in any way, please click the ***star*** button.
 
 ## Authors
