@@ -53,13 +53,13 @@
 ;; portable root dir (in local-projects)
 (defparameter *application-root*
   (asdf:system-source-directory :arpachat))
+
 (defparameter *static-directory*
   (merge-pathnames #P"static/" *application-root*))
 
 (defun static-server (port)
   (make-instance 'hunchentoot:acceptor :port port
                  :document-root *static-directory*))
-
 
 (defvar *ws-state* nil)
 
