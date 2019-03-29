@@ -10,4 +10,4 @@ install:
   - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
 
 script:
-  - ros rove -e '(or (progn  (rove:run :arpachat/tests :style :spec)) (uiop:quit -1))'
+  - ros -s rove -e '(or (progn  (rove:run :arpachat/tests :style :spec)) (uiop:quit -1))'
