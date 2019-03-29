@@ -8,6 +8,15 @@
            :stop))
 (in-package :arpachat)
 
+;; Use (arpachat:start) to start websocket and static file server
+;;     Default Ports: websocket - 3000, static file - 2000
+;;     (arpachat:stop) to stop both servers
+;;
+;;     (arpachat:start-ws port) to start only websocket server
+;;     (arpachat:start-static port) to start only static file server
+;;
+;;     (arpachat:stop-*) self explainable
+
 ;;; chat room
 (defclass chat-room (hunchensocket:websocket-resource)
   ((name :initarg :name :initform (error "Name this room!") :reader name))
@@ -41,19 +50,25 @@
 (defun ws-server (port)
   (make-instance 'hunchensocket:websocket-acceptor :port port))
 
-;; FIXME make the root start dir portable (start in other people arpachat dir, not just
-;; momozor's)
+;; portable root dir (in local-projects)
+(defparameter *application-root*
+  (asdf:system-source-directory :arpachat))
+(defparameter *static-directory*
+  (merge-pathnames #P"static/" *application-root*))
+
 (defun static-server (port)
   (make-instance 'hunchentoot:acceptor :port port
-                 :document-root #p"/home/momozor/quicklisp/local-projects/arpachat/static/index.html"))
+                 :document-root *static-directory*))
 
 
 (defvar *ws-state* nil)
+
 (defun start-ws (port)
   (setf *ws-state* (ws-server port))
   (hunchentoot:start *ws-state*))
 
 (defvar *static-state* nil)
+
 (defun start-static (port)
   (setf *static-state* (static-server port))
   (hunchentoot:start *static-state*))
