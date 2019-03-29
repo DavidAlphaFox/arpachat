@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/momozor/arpachat.svg?branch=master)](https://travis-ci.org/momozor/arpachat)
 # Arpachat
 A chat web application using Websockets and Common Lisp
 
