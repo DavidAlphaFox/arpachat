@@ -5,7 +5,7 @@ A chat web application using Websockets and Common Lisp
 ## Installation
 * Make sure you have *Quicklisp* installed
 * `git clone https://github.com/momozor/arpachat /path/to/quicklisp/local-projects/`
-* Launch your Lisp interpreter and run `(ql:quickload :arpachat)
+* Launch your Lisp interpreter and run `(ql:quickload :arpachat)`
 
 ## Usage
 * `(ql:quickload :arpachat)`
