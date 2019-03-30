@@ -25,7 +25,7 @@
 (defclass user (hunchensocket:websocket-client)
   ((name :initarg :user-agent :reader name :initform (error "Name this user!"))))
 
-(defvar *chat-rooms* (list (make-instance 'chat-room :name "/chat")))
+(defvar *chat-rooms* (list (make-instance 'chat-room :name "/lobby")))
 
 (defun find-room (request)
   (find (hunchentoot:script-name request) *chat-rooms* :test #'string= :key #'name))
