@@ -6,9 +6,11 @@ $(function() {
     let url = `ws://${HOST}:${PORT}/chat`
 
     let websocket = new WebSocket(url)
-    
+
     websocket.onmessage = function(event) {
-        $('#messages').append($(`<li>`).text(`${event.data}`))
+        $('#messages').append($(`<li>`).text(
+            `${event.data}`
+        ))
     }
 
     $('form').submit(function(event) {
