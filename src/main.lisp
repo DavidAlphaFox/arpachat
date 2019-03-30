@@ -46,8 +46,16 @@
 (defmethod hunchensocket:client-disconnected ((room chat-room) user)
   (broadcast room "~a has left ~a" (name user) (name room)))
 
+(defun decode-username (message)
+  (let ((dj (cl-json:decode-json-from-string message)))
+    (cdr (assoc :username dj))))
+
+(defun decode-message (message)
+  (let ((dj (cl-json:decode-json-from-string message)))
+    (cdr (assoc :message dj))))
+
 (defmethod hunchensocket:text-message-received ((room chat-room) user message)
-  (broadcast room "~a says ~a" (name user) message))
+  (broadcast room "~a:~a" (decode-username message) (decode-message message)))
 
 ;;; servers
 
