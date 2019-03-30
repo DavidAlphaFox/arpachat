@@ -19,13 +19,15 @@
 
 ;;; chat room
 (defclass chat-room (hunchensocket:websocket-resource)
-  ((name :initarg :name :initform (error "Name this room!") :reader name))
+  ((name :initarg :name
+         :initform (error "Name this room!")
+         :reader name))
   (:default-initargs :client-class 'user))
 
 (defclass user (hunchensocket:websocket-client)
   ((name :initarg :user-agent :reader name :initform (error "Name this user!"))))
 
-(defvar *chat-rooms* (list (make-instance 'chat-room :name "/lobby")))
+(defvar *chat-rooms* (list (make-instance 'chat-room :name "/chat")))
 
 (defun find-room (request)
   (find (hunchentoot:script-name request) *chat-rooms* :test #'string= :key #'name))
