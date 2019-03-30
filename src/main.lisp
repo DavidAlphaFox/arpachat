@@ -66,13 +66,11 @@
                  :document-root *static-directory*))
 
 (defvar *ws-state* nil)
-
 (defun start-ws (port)
   (setf *ws-state* (ws-server port))
   (hunchentoot:start *ws-state*))
 
 (defvar *static-state* nil)
-
 (defun start-static (port)
   (setf *static-state* (static-server port))
   (hunchentoot:start *static-state*))
