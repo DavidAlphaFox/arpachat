@@ -25,7 +25,9 @@
   (:default-initargs :client-class 'user))
 
 (defclass user (hunchensocket:websocket-client)
-  ((name :initarg :user-agent :reader name :initform (error "Name this user!"))))
+  ((name :initarg :user-agent
+         :initform (error "Name this user!")
+         :reader name)))
 
 (defvar *chat-rooms* (list (make-instance 'chat-room :name "/chat")))
 

@@ -5,6 +5,7 @@ $(function() {
 
     let websocket = new WebSocket(url)
 
+    let username = prompt('username')
     websocket.onmessage = function(event) {
         $('#messages').append($('<li>').text(event.data))
     }
