@@ -1,6 +1,7 @@
 (defpackage arpachat
   (:use :cl)
-  (:export :start-ws
+  (:export :client-decoder
+           :start-ws
            :start-static
            :stop-ws
            :stop-static
