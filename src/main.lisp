@@ -9,15 +9,6 @@
            :stop))
 (in-package :arpachat)
 
-;; Use (arpachat:start) to start websocket and static file server
-;;     Default Ports: websocket - 3000, static file - 2000
-;;     (arpachat:stop) to stop both servers
-;;
-;;     (arpachat:start-ws port) to start only websocket server
-;;     (arpachat:start-static port) to start only static file server
-;;
-;;     (arpachat:stop-*) self explainable
-
 ;;; chat room
 (defclass chat-room (hunchensocket:websocket-resource)
   ((name :initarg :name
@@ -47,9 +38,9 @@
 (defmethod hunchensocket:client-disconnected ((room chat-room) user)
   (broadcast room "A user has left the room"))
 
-;; decode client data
-;; returns username or message string
 (defun client-decoder (message usernamep)
+  "decodes client data from json to string
+   returns username or message in string"
   (let ((dj (cl-json:decode-json-from-string message)))
     (if usernamep
         (cdr (assoc :username dj))
@@ -76,25 +67,35 @@
 
 (defvar *ws-state* nil)
 (defun start-ws (port)
+  "start websocket server
+   :p port fixnum"
   (setf *ws-state* (ws-server port))
   (hunchentoot:start *ws-state*))
 
 (defvar *static-state* nil)
 (defun start-static (port)
+  "start static file server
+   :p port fixnum"
   (setf *static-state* (static-server port))
   (hunchentoot:start *static-state*))
 
 (defun stop-ws ()
+  "stop websocket server"
   (hunchentoot:stop *ws-state*))
 
 (defun stop-static ()
+  "stop static file server"
   (hunchentoot:stop *static-state*))
 
 (defun start (&key (websocket-port 3000) (static-port 2000))
+  "start both websocket and static file servers
+   :p websocket-port fixnum - default to 3000
+   :p static-port fixnum - default to 2000"
   (start-ws websocket-port)
   (start-static static-port))
 
 (defun stop ()
+  "stop both websocket and static file servers"
   (hunchentoot:stop *ws-state*)
   (hunchentoot:stop *static-state*))
 
