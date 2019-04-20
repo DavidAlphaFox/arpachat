@@ -26,4 +26,4 @@ If you find this software is helpful in any way, please click the ***star*** but
 * Momozor
 
 ## License
-This project is licensed under the GPL-3.0 license. See LICENSE file for more details
+This project is licensed under the AGPL-3.0 license. See LICENSE file for more details
